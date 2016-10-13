@@ -8,20 +8,28 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * L'application HomeFinder avec sa carte et ses deux range sliders
+ *
+ * @author Quentin Dunand & Elsa Navarro
+ *
+ */
 public class HomeFinder extends JFrame {
 
 	public HomeFinder() {
 
-		super();
-
+		// Notre composant représentant notre map
 		HomeMap homeMap = new HomeMap();
 
-		RangeSlider rsPiece = new RangeSlider(0, homeMap.getMaxPiece() / 3, homeMap.getMinPiece(),
-				homeMap.getMaxPiece(), homeMap.getMaxPiece() / 3);
+		// Le range slider manipulant le nombre de pièce de l'appartmement
+		RangeSlider rsPiece = new RangeSlider(0, homeMap.getMaxPiece() - homeMap.getMinPiece(),
+				homeMap.getMinPiece(), homeMap.getMaxPiece(), homeMap.getMinPiece());
 
-		RangeSlider rsPrice = new RangeSlider(0, homeMap.getMaxPrice() / 3, homeMap.getMinPrice(),
-				homeMap.getMaxPrice(), homeMap.getMaxPrice() / 3);
+		// Le range slider manipulant le prix de location
+		RangeSlider rsPrice = new RangeSlider(0, homeMap.getMaxPrice() - homeMap.getMinPrice(),
+				homeMap.getMinPrice(), homeMap.getMaxPrice(), homeMap.getMinPrice());
 
+		// Les différents labels de l'applciation
 		JLabel rangeSliderLowerPièceLabel = new JLabel();
 		JLabel rangeSliderLowerPièceValue = new JLabel();
 		JLabel rangeSliderUpperPièceLabel = new JLabel();
@@ -31,7 +39,9 @@ public class HomeFinder extends JFrame {
 		JLabel rangeSliderUpperPriceLabel = new JLabel();
 		JLabel rangeSliderUpperPriceValue = new JLabel();
 
+		// Conteneur pour le range slider des pièces
 		JPanel roomPanel = new JPanel(new GridLayout(2, 1));
+		// Conteneur pour le range slider des prix
 		JPanel pricePanel = new JPanel(new GridLayout(2, 1));
 
 		JPanel flowPrice = new JPanel(new FlowLayout());
@@ -75,35 +85,29 @@ public class HomeFinder extends JFrame {
 		contentPane.add(homeMap, BorderLayout.CENTER);
 		contentPane.add(contentPaneEast, BorderLayout.EAST);
 
-		// RangeSlider slider_prix = new RangeSlider(homeMap.getMinPrice(), homeMap.getMaxPrice(),
-		// homeMap.getMinPrice(), homeMap.getMaxPrice(), 1, "Selection des prix : ", 1);
-		// slider_prix.setPreferredSize(new Dimension(125, 75));
-		// RangeSlider slider_nb_pieces = new RangeSlider(homeMap.getMinPiece(),
-		// homeMap.getMaxPiece(),
-		// homeMap.getMinPiece(), homeMap.getMaxPiece(), 1, "Nombre de pièces :", 2);
-		// slider_nb_pieces.setPreferredSize(new Dimension(125, 75));
-		//
-		// slider_prix.getModel().addRangeSliderListener(homeMap);
-		// slider_nb_pieces.getModel().addRangeSliderListener(homeMap);
-		//
-
-		// Add listener to update display.
+		// Listener pour mettre à jour l'affichage en fonction du nombre de pièces
 		rsPiece.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				RangeSlider slider = (RangeSlider) e.getSource();
 				rangeSliderLowerPièceValue.setText(Integer.toString(slider.getValue()));
 				rangeSliderUpperPièceValue.setText(Integer.toString(slider.getUpperValue()));
+				homeMap.setMaxPiece(slider.getUpperValue());
+				homeMap.setMinPiece(slider.getValue());
+				homeMap.repaint();
 			}
 		});
 
-		// Add listener to update display.
+		// Listener pour mettre à jour l'affichage en fonction du nombre du prix
 		rsPrice.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				RangeSlider slider = (RangeSlider) e.getSource();
 				rangeSliderLowerPriceValue.setText(Integer.toString(slider.getValue()));
 				rangeSliderUpperPriceValue.setText(Integer.toString(slider.getUpperValue()));
+				homeMap.setMaxPrice(slider.getUpperValue());
+				homeMap.setMinPrice(slider.getValue());
+				homeMap.repaint();
 			}
 		});
 
@@ -115,6 +119,8 @@ public class HomeFinder extends JFrame {
 		contentPaneEast.add(new JPanel());
 		setVisible(true);
 
+		// Fenêtre non resizable et position au centre
 		setResizable(false);
+		setLocationRelativeTo(null);
 	}
 }

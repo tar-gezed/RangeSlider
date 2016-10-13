@@ -1,3 +1,9 @@
+/**
+ * Représentation d'un appartement et de ses informations
+ *
+ * @author Quentin Dunand & Elsa Navarro
+ *
+ */
 public class Home {
 
 	private int id;
@@ -5,14 +11,22 @@ public class Home {
 	private int nbPieces;
 	private int value;
 
+	/**
+	 * Main constructor
+	 *
+	 * @param id
+	 * @param position
+	 * @param nbPieces
+	 * @param value
+	 */
 	public Home(int id, Position position, int nbPieces, int value) {
-		super();
 		this.id = id;
 		this.position = position;
 		this.nbPieces = nbPieces;
 		this.value = value;
 	}
 
+	// Ensemble de getter et setter pour nos appartements
 	public int getId() {
 		return id;
 	}
@@ -45,6 +59,9 @@ public class Home {
 		this.value = value;
 	}
 
+	/**
+	 * Méthode toString permettant un affichage simple d'un appartement
+	 */
 	@Override
 	public String toString() {
 		return "[Home n°" + this.id + "] NbPieces: " + this.nbPieces + ", Position: "

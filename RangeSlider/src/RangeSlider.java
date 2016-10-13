@@ -1,7 +1,12 @@
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeListener;
 
+/**
+ * Le modèle de notre RangeSLider qui étend la classe JSlider
+ *
+ * @author Quentin Dunand
+ *
+ */
 public class RangeSlider extends JSlider {
 
 	/**
@@ -28,7 +33,7 @@ public class RangeSlider extends JSlider {
 	}
 
 	/**
-	 * Constructor with min and max value
+	 * Constructor prenant en paramètre les valeurs min et max
 	 *
 	 * @param min
 	 *            The minimum value possible
@@ -46,33 +51,18 @@ public class RangeSlider extends JSlider {
 	}
 
 	/**
-	 * Returns the lower value in the range.
-	 */
-	@Override
-	public int getValue() {
-		return super.getValue();
-	}
-
-	/**
-	 * Sets the upper (rightest) value of the range.
+	 * Setter pour la valeur supérieure (slider le plus à droite)
 	 */
 	public void setUpperValue(int value) {
 
 		int minValue = getValue();
-
-		// Compute new extent and then sets it
+		// Calcul du nouveau extent
 		int newExtent = Math.min(Math.max(0, value - minValue), getMaximum() - minValue);
-		System.out.println("nex Extent = " + newExtent);
 		setExtent(newExtent);
 	}
 
-	@Override
-	public void addChangeListener(ChangeListener l) {
-		// TODO Auto-generated method stub
-		super.addChangeListener(l);
-	}
-
 	/**
+	 * Getter pour la valeur supérieure (slider le plus à droite)
 	 *
 	 * @return the upper value of the range
 	 */
@@ -81,22 +71,23 @@ public class RangeSlider extends JSlider {
 	}
 
 	/**
-	 * Override setValue to set the lowest value
+	 * Override de setValue afin de setter la valeur inférieure (le slider le plus à gauche)
 	 */
 	@Override
 	public void setValue(int n) {
 		int oldValue = getValue();
+		// Si la valeur n'as pas changé, pas la peine de calculer quelque chose
 		if (oldValue == n) {
 			return;
 		}
 
-		// Backup old extent value
+		// Sauvegarde de l'ancienne valeur de extent
 		int oldExtent = getExtent();
-		// Compute new value :
+		// Calcul des nouvelles valeurs de extent et Value
 		int newValue = Math.min(Math.max(getMinimum(), n), oldValue + oldExtent);
 		int newExtent = oldExtent + oldValue - newValue;
 
-		// Sets new value and new extent
+		// On set le nouveau extent et le nouveau value après les avoir calculés
 		getModel().setRangeProperties(newValue, newExtent, getMinimum(), getMaximum(), getValueIsAdjusting());
 	}
 }

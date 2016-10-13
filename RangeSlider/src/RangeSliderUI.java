@@ -16,6 +16,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 /**
+ * IMPORTANT: Cet UI provient d'un tutoriel trouvé sur internet à l'adresse suivante:
+ * https://ernienotes.wordpress.com/2010/12/27/creating-a-java-swing-range-slider/
+ *
+ * En effet, le but de ce TP n'étant pas de s'attarder sur cet élément, nous avons choisi d'utiliser
+ * un modèle existant afin de gagner du temps et nous permettre de terminer ce TP. De plus, le fait
+ * de suivre ce tutoriel nous a permis d'apprendre de nombreuse chose en le suivant.
+ *
  * UI delegate for the RangeSlider component. RangeSliderUI paints two thumbs, one for the lower
  * value and one for the upper value.
  */
@@ -36,7 +43,7 @@ class RangeSliderUI extends BasicSliderUI {
 
 	/**
 	 * Constructs a RangeSliderUI for the specified slider component.
-	 * 
+	 *
 	 * @param b
 	 *            RangeSlider
 	 */

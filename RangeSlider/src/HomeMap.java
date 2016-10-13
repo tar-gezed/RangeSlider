@@ -10,18 +10,45 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * Notre composant map avec les logements dessinés par dessus
+ *
+ * @author Quentin Dunand & Elsa Navarro
+ *
+ */
 public class HomeMap extends JPanel {
 
+	// Les infos principales de notre map
 	public int minPrice = 0;
 	public int maxPrice = 10000;
 	public int minPiece = 1;
 	public int maxPiece = 10;
 	public ArrayList<Home> HomeList = new ArrayList<Home>();
 
+	/**
+	 * Main constructor: génère uniquement les appartements
+	 */
 	public HomeMap() {
 		generateHomes();
 	}
 
+	/**
+	 * Constructor avec en paramètre les valeurs min et max des appartements à generer
+	 *
+	 * @param minPrice
+	 * @param maxPrice
+	 * @param minPiece
+	 * @param maxPiece
+	 */
+	public HomeMap(int minPrice, int maxPrice, int minPiece, int maxPiece) {
+		setMinPrice(minPrice);
+		setMaxPrice(maxPrice);
+		setMinPiece(minPiece);
+		setMaxPiece(maxPiece);
+		generateHomes();
+	}
+
+	// Ensemble de getter et setter permettant la mise à jour de l'affichage
 	public int getMinPrice() {
 		return minPrice;
 	}
@@ -54,6 +81,9 @@ public class HomeMap extends JPanel {
 		this.maxPiece = maxPiece;
 	}
 
+	/**
+	 * Génération des appartements selon la taille de la carte
+	 */
 	public void generateHomes() {
 		int imgWidth = 0;
 		int imgHeight = 0;
@@ -63,11 +93,11 @@ public class HomeMap extends JPanel {
 			imgHeight = map.getHeight();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		for (int i = 1; i <= 20; i++) {
+		// Boucle de génération des appartements
+		for (int i = 1; i <= 50; i++) {
 			Position position = new Position(Math.random() * (imgWidth - 30), Math.random()
 					* (imgHeight - 30));
 			int nbPieces = (int) (Math.random() * (this.maxPiece - this.minPiece) + this.minPiece);
@@ -80,7 +110,16 @@ public class HomeMap extends JPanel {
 		}
 	}
 
-	public void drawHouseInBounds(Graphics g, int min_value_price, int max_value_price, int min_value_piece,
+	/**
+	 * Méthode permettant le dessin des appartements sur la carte
+	 *
+	 * @param g
+	 * @param min_value_price
+	 * @param max_value_price
+	 * @param min_value_piece
+	 * @param max_value_piece
+	 */
+	public void drawHomes(Graphics g, int min_value_price, int max_value_price, int min_value_piece,
 			int max_value_piece) {
 
 		Iterator<Home> itr = HomeList.iterator();
@@ -88,12 +127,11 @@ public class HomeMap extends JPanel {
 		while (itr.hasNext()) {
 
 			Home home = itr.next();
+			// On arrondi les positions pour afficher les appartements sur la carte
 			int x = (int) home.getPosition().getX();
 			int y = (int) home.getPosition().getY();
 
-			// int X = (int) Math.round(x);
-			// int Y = (int) Math.round(y);
-
+			// Dessin uniquement si les valeurs sont dans les ranges determinés
 			if (home.getValue() <= max_value_price && home.getValue() >= min_value_price
 					&& home.getNbPieces() >= min_value_piece && home.getNbPieces() <= max_value_piece) {
 
@@ -103,7 +141,12 @@ public class HomeMap extends JPanel {
 				g.fillOval(x + 1, y + 1, 20, 20);
 				g.setColor(Color.BLACK);
 
-				g.drawString(Integer.toString(home.getId()), x + 4, y + 15);
+				// Centrage approximatif du texte dans les ronds dessinés
+				if (home.getId() < 10) {
+					g.drawString(Integer.toString(home.getId()), x + 7, y + 15);
+				} else {
+					g.drawString(Integer.toString(home.getId()), x + 4, y + 15);
+				}
 
 			}
 
@@ -111,9 +154,12 @@ public class HomeMap extends JPanel {
 
 	}
 
+	/**
+	 * Dessin de la carte et des logements
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
-
+		// Lecture de l'image pour pouvoir la dessinée
 		try {
 			Image map = ImageIO.read(new File("grenoble_map.jpeg"));
 			g.drawImage(map, 0, 0, this);
@@ -122,7 +168,8 @@ public class HomeMap extends JPanel {
 			e.printStackTrace();
 		}
 
-		drawHouseInBounds(g, getMinPrice(), getMaxPrice(), getMinPiece(), getMaxPiece());
+		// Dessin des appartements
+		drawHomes(g, getMinPrice(), getMaxPrice(), getMinPiece(), getMaxPiece());
 
 	}
 
